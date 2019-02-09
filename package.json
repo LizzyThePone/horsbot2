@@ -1,0 +1,30 @@
+{
+  "name": "horsbot2",
+  "version": "1.0.0",
+  "description": "General purpose Discord music and auto-mod bot",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LizzyThePone/horsbot2.git"
+  },
+  "author": "lizzytheluxray",
+  "license": "AGPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/LizzyThePone/horsbot2/issues"
+  },
+  "homepage": "https://github.com/LizzyThePone/horsbot2#readme",
+  "dependencies": {
+    "bufferutil": "^3.0.5",
+    "chalk": "^2.4.2",
+    "discord.js": "^11.4.2",
+    "discord.js-lavalink": "^2.1.3",
+    "fs-extra": "^7.0.1",
+    "is-url": "^1.2.4",
+    "request": "^2.88.0",
+    "request-promise": "^4.2.2",
+    "uws": "^9.148.0"
+  }
+}
