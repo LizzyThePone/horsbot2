@@ -67,7 +67,169 @@ module.exports = (Discord, client, config) => {
         help: "Play pingus you dingus."
     })
 
-    
+    client.commandMap.set('invite', {
+        func(message) {
+            client.generateInvite(8)
+                .then(link => {
+                    const embed = new Discord.RichEmbed()
+                        .setColor(config.embedColor)
+                        .setTitle(`Take me!`)
+                        .setFooter('made with \u2764 by \u{1D4DB}\u{1D4F2}\u{1D503}\u{1D503}\u{1D502}')
+                        .setURL(link);
+                    message.channel.send(embed);
+                });
+        },
+        check() {
+            return true;
+        },
+        help: "Generate an invite for me <3"
+    });
+
+    client.commandMap.set('eval', {
+        func(message) {
+            try {
+                let evalStr = eval(message.content.replace(config.prefix + "eval ", ""));
+                let embed = new Discord.RichEmbed()
+                    .setTitle("Result:")
+                    .setDescription(evalStr)
+                    .setColor(config.embedColor);
+                message.channel.send(embed);
+            } catch (err) {
+                let embed = new Discord.RichEmbed()
+                    .setTitle("Error:")
+                    .setDescription(err.stack)
+                    .setColor(config.errorColor);
+                message.channel.send(embed);
+            }
+        },
+        check(message) {
+            if (message.author.id !== client.owner.id) {
+                let embed = new Discord.RichEmbed()
+                    .setTitle("Unable to run:")
+                    .setDescription('That command is restricted to the bot owner!')
+                    .setColor(config.errorColor);
+                message.channel.send(embed);
+                return false;
+            } else {
+                return true;
+            }
+        },
+        help: "Nuthing as far as you're concerned :3 {owner only}"
+    });
+
+    client.commandMap.set('shutdown', {
+        func() {
+            let embed = new Discord.RichEmbed()
+                .setTitle("Stopping bot!")
+                .setColor(config.errorColor);
+            client.owner.send(embed);
+            process.exit();
+        },
+        check(message) {
+            if (message.author.id !== client.owner.id) {
+                let embed = new Discord.RichEmbed()
+                    .setTitle("Unable to run:")
+                    .setDescription('That command is restricted to the bot owner!')
+                    .setColor(config.errorColor);
+                message.channel.send(embed);
+                return false;
+            } else {
+                return true;
+            }
+        },
+        help: "Plez dun hurt me ;-; {owner only}"
+    });
+
+    client.commandMap.set('prefix', {
+        func(message) {
+            config.prefix = message.content.replace(config.prefix + "prefix ", "");
+            fs.writeJsonSync('./config.json', config);
+            let embed = new Discord.RichEmbed()
+                .setTitle(`\u2705 Prefix changed to ${config.prefix}`)
+                .setColor(config.embedColor);
+            message.channel.send(embed);
+        },
+        check(message) {
+            if (message.author.id !== client.owner.id) {
+                let embed = new Discord.RichEmbed()
+                    .setTitle("Unable to run:")
+                    .setDescription('That command is restricted to the bot owner!')
+                    .setColor(config.errorColor);
+                message.channel.send(embed);
+                return false;
+            } else {
+                return true;
+            }
+        },
+        help: "Change my prefix {owner only}"
+    });
+
+    client.commandMap.set('ban', {
+        func(message) {
+            let banUser = message.mentions.users.first();
+            client.banned.push(banUser.id);
+            fs.writeJsonSync('./bannedusers.json', client.banned);
+            let embed = new Discord.RichEmbed()
+                .setDescription(`Banned ${banUser}`)
+                .setColor(config.errorColor);
+            message.channel.send(embed);
+        },
+        check(message) {
+            if (message.author.id !== client.owner.id) {
+                let embed = new Discord.RichEmbed()
+                    .setTitle("Unable to run:")
+                    .setDescription('That command is restricted to the bot owner!')
+                    .setColor(config.errorColor);
+                message.channel.send(embed);
+                return false;
+            } else {
+                return true;
+            }
+        },
+        help: "Ban user from me for any server {owner only}"
+    });
+
+    client.commandMap.set('unban', {
+        func(message) {
+            let banUser = message.mentions.users.first();
+            client.banned = client.banned.filter(element => element !== banUser.id);
+            fs.writeJsonSync('./bannedusers.json', client.banned);
+            let embed = new Discord.RichEmbed()
+                .setDescription(`Unbanned ${banUser}`)
+                .setColor(config.errorColor);
+            message.channel.send(embed);
+        },
+        check(message) {
+            if (message.author.id !== client.owner.id) {
+                let embed = new Discord.RichEmbed()
+                    .setTitle("Unable to run:")
+                    .setDescription('That command is restricted to the bot owner!')
+                    .setColor(config.errorColor);
+                message.channel.send(embed);
+                return false;
+            } else {
+                return true;
+            }
+        },
+        help: "Unban user from me for any server {owner only}"
+    });
+
+    client.commandMap.set('help', {
+        func(message) {
+            const pong = client.ping;
+            const embed = new Discord.RichEmbed()
+                .setColor(config.embedColor)
+                client.commandMap.forEach((element, key) => {
+                    embed.addField(key, element.help);
+                });
+            message.channel.send(embed);
+        },
+        check() {
+            return true;
+        },
+        help: "Get a list of commands and help info."
+    });
+
 
 }
 

@@ -75,6 +75,7 @@ client.on('ready', () => {
         console.log(chalk.hex(config.lineColor)('-----------------------------\n'));
         require('./modules/commands')(Discord, client, config);
         require('./modules/music')(Discord, client, config);
+        require('./modules/moderation')(Discord, client, config);
         let embed = new Discord.RichEmbed()
             .setDescription(`Started at ${new Date()}`)
             .setColor(config.embedColor);
@@ -85,10 +86,10 @@ client.on('ready', () => {
 client.on('message', message => {
     if (!message.content.startsWith(config.prefix)) return;
     message.commandName = message.content.toLocaleLowerCase().split(' ')[0].slice(config.prefix.length);
-    var command = client.commandMap.get(message.commandName);
+    let command = client.commandMap.get(message.commandName);
     if (command) {
         if (client.banned.find(element => element === message.author.id)) {
-            var embed = new Discord.RichEmbed()
+            let embed = new Discord.RichEmbed()
                 .setTitle("You are banned by the bot owner.")
                 .setColor(config.errorColor);
             message.channel.send(embed);
