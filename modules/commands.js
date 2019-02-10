@@ -1,5 +1,6 @@
 const fs = require('fs-extra');
 const rp = require('request-promise');
+const git = require('git-pull-or-clone');
 
 module.exports = (Discord, client, config) => {
     console.log("Loaded main commands")
@@ -231,7 +232,32 @@ module.exports = (Discord, client, config) => {
         help: "Get a list of commands and help info."
     });
 
-    
+    client.commandMap.set('update', {
+        func(message) {
+            git('git@github.com:LizzyThePone/horsbot2.git', `${__dirname}/..`, (err) => {
+                if (err) throw err
+                let embed = new Discord.RichEmbed()
+                    .setTitle("Update complete! Stopping bot!")
+                    .setColor(config.errorColor);
+                client.owner.send(embed);
+                console.log('Update complete!')
+                process.exit();
+              })
+        },
+        check(message) {
+            if (message.author.id !== client.owner.id) {
+                let embed = new Discord.RichEmbed()
+                    .setTitle("Unable to run:")
+                    .setDescription('That command is restricted to the bot owner!')
+                    .setColor(config.errorColor);
+                message.channel.send(embed);
+                return false;
+            } else {
+                return true;
+            }
+        },
+        help: "Update the bot to the latest github version {owner only}"
+    })
 
 }
 
