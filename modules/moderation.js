@@ -28,6 +28,14 @@ module.exports = (Discord, client, config) => {
                 message.channel.send(embed).then(response => {
                     response.delete(3000);
                 });
+            }).catch(err => {
+                console.log(err);
+                let embed = new Discord.RichEmbed()
+                    .setTitle(`\u2705 ${err}`)
+                    .setColor(config.embedColor);
+                message.channel.send(embed).then(response => {
+                    response.delete(3000);
+                });
             });
         },
         check(message) {
