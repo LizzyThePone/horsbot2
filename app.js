@@ -88,6 +88,36 @@ client.on('message', message => {
     message.commandName = message.content.toLocaleLowerCase().split(' ')[0].slice(config.prefix.length);
     let command = client.commandMap.get(message.commandName);
     if (command) {
+        message.used = true
+        if (client.banned.find(element => element === message.author.id)) {
+            let embed = new Discord.RichEmbed()
+                .setTitle("You are banned by the bot owner.")
+                .setColor(config.errorColor);
+            message.channel.send(embed);
+            message.denied = true;
+            logCommand(message);
+            return;
+        }
+        if (command.check) {
+            if (command.check(message) !== true) {
+                message.denied = true;
+                logCommand(message);
+                return;
+            }
+        }
+        command.func(message);
+        message.denied = false;
+        logCommand(message);
+    }
+});
+
+client.on('messageUpdate', message => {
+    if (!message.content.startsWith(config.prefix)) return;
+    if (message.used && message.used === true) return;
+    message.commandName = message.content.toLocaleLowerCase().split(' ')[0].slice(config.prefix.length);
+    let command = client.commandMap.get(message.commandName);
+    if (command) {
+        message.used = true
         if (client.banned.find(element => element === message.author.id)) {
             let embed = new Discord.RichEmbed()
                 .setTitle("You are banned by the bot owner.")
