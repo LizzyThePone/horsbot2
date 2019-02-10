@@ -1,6 +1,7 @@
 const fs = require('fs-extra');
 
 module.exports = (Discord, client, config) => {
+    console.log("Loaded mod commands")
 
     client.commandMap.set('prune', {
         func(message) {

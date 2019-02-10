@@ -2,6 +2,7 @@ const fs = require('fs-extra');
 const rp = require('request-promise');
 
 module.exports = (Discord, client, config) => {
+    console.log("Loaded main commands")
     let e621 = tags => {
         let options = {
             'uri': 'https://e621.net/post/index.json',

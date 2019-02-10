@@ -2,6 +2,7 @@ const rp = require('request-promise');
 const isurl = require('is-url');
 
 module.exports = (Discord, client, config) => {
+    console.log("Loaded music commands")
 
     const {PlayerManager} = require("discord.js-lavalink");
 
