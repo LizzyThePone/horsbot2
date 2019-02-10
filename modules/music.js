@@ -45,10 +45,10 @@ module.exports = (Discord, client, config) => {
             'host': "localhost"
         });
         let track = guild.queue[0];
-        await guild.player.volume(guild.volume || 25);
-        await guild.player.play(track.track);
-        await guild.player.once("error", error => console.error(error));
-        await guild.player.once("end", () => {
+        guild.player.volume(guild.volume || 25);
+        guild.player.play(track.track);
+        guild.player.once("error", error => console.error(error));
+        guild.player.once("end", () => {
             guild.queue.shift();
             play(guild, guild.player.channel);
         });
