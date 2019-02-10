@@ -29,7 +29,6 @@ module.exports = (Discord, client, config) => {
                     response.delete(3000);
                 });
             }).catch(err => {
-                console.log(err);
                 let embed = new Discord.RichEmbed()
                     .setTitle(`\u274C ${err}`)
                     .setColor(config.embedColor);
