@@ -59,6 +59,7 @@ let logCommand = message => {
 };
 
 client.on('ready', () => {
+    client.user.setPresence({ game: { name: ']help' }, status: 'idle' })
     console.log(chalk.hex(config.lineColor)('-----------------------------'));
     console.log(chalk.hex(config.readyColor)(`Bot started as ${chalk.blue(client.user.tag)}`));
     client.fetchApplication().then(app => {
