@@ -25,6 +25,7 @@
     "is-url": "^1.2.4",
     "request": "^2.88.0",
     "request-promise": "^4.2.2",
-    "uws": "^9.148.0"
+    "uws": "^9.148.0",
+    "git-pull-or-clone": "^1.2.0"
   }
 }
