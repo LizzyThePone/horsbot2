@@ -30,7 +30,7 @@ module.exports = (Discord, client, config) => {
                 });
             }).catch(err => {
                 let embed = new Discord.RichEmbed()
-                    .setTitle(`\u274C ${err}`)
+                    .setTitle(`\u{274C} ${err}`)
                     .setColor(config.embedColor);
                 message.channel.send(embed).then(response => {
                     response.delete(10000);
