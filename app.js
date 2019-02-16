@@ -157,5 +157,5 @@ client.on('guildMemberAdd', member => {
 })
 
 client.on('message', message => {
-    if (message.content.includes(' ') && message.channel.id === "482180108220891146") message.delete()
+    if ((!message.content.includes('http') || !message.content === "") && message.channel.id === "482180108220891146") message.delete()
 })
