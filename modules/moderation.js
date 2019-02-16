@@ -1,5 +1,4 @@
 const fs = require('fs-extra');
-const enmap = require("enmap");
 moduleName = "MODERATION"
 
 module.exports = (Discord, client, config, keyv) => {
