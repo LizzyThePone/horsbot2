@@ -81,7 +81,7 @@ client.on('ready', () => {
             require('./modules/commands')(Discord, client, config, nmap);
             require('./modules/music')(Discord, client, config, nmap);
             require('./modules/moderation')(Discord, client, config, nmap);
-        }
+        })
         let embed = new Discord.RichEmbed()
             .setDescription(`Started at ${new Date()}`)
             .setColor(config.embedColor);
