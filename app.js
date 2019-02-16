@@ -26,6 +26,7 @@ fs.exists(configLocation).then(exists => {
         console.log('Config loaded!');
         config = configFile;
         client.login(config.token);
+        console.log(config.mongo);
         keyv = new Keyv(config.mongo);
     }
 });
