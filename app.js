@@ -164,6 +164,9 @@ client.on('message', message => {
         if(message.attachments.first()){
             return
         }
+        if(message.author.id === client.user.id){
+            return
+        }
         message.delete()
     }
 })
