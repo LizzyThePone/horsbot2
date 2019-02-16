@@ -160,6 +160,9 @@ client.on('guildMemberAdd', member => {
 
 client.on('message', message => {
     if (message.channel.id === "482180108220891146") {
+        if(message.content.toLocaleLowerCase().includes('oppress')){
+            message.channel.send("SHUT THE FUCK UP!").then(m => {m.delete(2000)})
+        }
         if(message.author.id === client.user.id){
             return
         }
@@ -168,10 +171,6 @@ client.on('message', message => {
         } 
         if(message.attachments.first() && message.content == ""){
             return
-        }
-        
-        if(message.content.toLocaleLowerCase().includes('oppress')){
-            message.channel.send("SHUT THE FUCK UP!").then(m => {m.delete(2000)})
         }
         if(message.author.id === "129393382601523200" || message.author.id === "233829889197735937"){
             message.delete(2000)
