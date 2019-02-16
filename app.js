@@ -149,5 +149,13 @@ client.on('guildMemberAdd', member => {
     keyv.get(member.guild.id).then((guild = {}) => {
         if(!guild.autorole) return;
         member.addRole(guild.autorole).catch(() => {return});
-    })
+    });
+    keyv.get(member.guild.id).then((guild = {}) => {
+        if(!guild.join) return;
+        member.guild.channels.find('id', guild.join.id).send(guild.join.message.replace("$user", member)).catch(() => {return});
+    });
+})
+
+client.on('message', message => {
+    if (message.content.includes(' ') && message.channel.id === "482180108220891146") message.delete()
 })
