@@ -26,7 +26,6 @@ fs.exists(configLocation).then(exists => {
         console.log('Config loaded!');
         config = configFile;
         client.login(config.token);
-        console.log(config.mongo);
         keyv = new Keyv(config.mongo);
     }
 });
@@ -155,7 +154,6 @@ client.on('guildMemberAdd', member => {
         member.guild.channels.find('id', guild.join.id).send(guild.join.message.replace("$user", member)).catch(() => {return});
     });
     if (member.guild.id === "161281219839918080"){
-        console.log('fuck')
         member.setNickname(`\u2022 ${member.user.username}`)
     }
 })
