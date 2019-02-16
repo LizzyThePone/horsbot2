@@ -78,11 +78,9 @@ client.on('ready', () => {
         client.owner = app.owner;
         console.log(chalk.hex(config.readyColor)(`Owner set to ${chalk.blue(client.owner.tag)}`));
         console.log(chalk.hex(config.lineColor)('-----------------------------\n'));
-        nmap.defer.then( () => {
-            require('./modules/commands')(Discord, client, config, nmap);
-            require('./modules/music')(Discord, client, config, nmap);
-            require('./modules/moderation')(Discord, client, config, nmap);
-        })
+        require('./modules/commands')(Discord, client, config, nmap);
+        require('./modules/music')(Discord, client, config, nmap);
+        require('./modules/moderation')(Discord, client, config, nmap);
         let embed = new Discord.RichEmbed()
             .setDescription(`Started at ${new Date()}`)
             .setColor(config.embedColor);
