@@ -154,7 +154,7 @@ client.on('guildMemberAdd', member => {
         if(!guild.join) return;
         member.guild.channels.find('id', guild.join.id).send(guild.join.message.replace("$user", member)).catch(() => {return});
     });
-    if (member.guild.id === "161281219839918080"){\
+    if (member.guild.id === "161281219839918080"){
         console.log('fuck')
         member.setNickname(`\u2022 ${member.user.username}`)
     }
