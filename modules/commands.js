@@ -1,8 +1,9 @@
 const fs = require('fs-extra');
 const rp = require('request-promise');
 const git = require('git-pull-or-clone');
+moduleName = "MAIN";
 
-module.exports = (Discord, client, config) => {
+module.exports = (Discord, client, config, keyv) => {
     console.log("Loaded main commands")
     let e621 = tags => {
         let options = {
@@ -47,7 +48,8 @@ module.exports = (Discord, client, config) => {
                 return true;
             }
         },
-        help: "Searches e621 and pulls a random result from the first 200"
+        help: "Searches e621 and pulls a random result from the first 200",
+        module: moduleName
     });
 
 
@@ -84,7 +86,8 @@ module.exports = (Discord, client, config) => {
         check() {
             return true;
         },
-        help: "Generate an invite for me <3"
+        help: "Generate an invite for me <3",
+        module: moduleName
     });
 
     client.commandMap.set('eval', {
@@ -116,7 +119,8 @@ module.exports = (Discord, client, config) => {
                 return true;
             }
         },
-        help: "Nuthing as far as you're concerned :3 {owner only}"
+        help: "Nuthing as far as you're concerned :3 {owner only}",
+        module: moduleName
     });
 
     client.commandMap.set('shutdown', {
@@ -139,7 +143,8 @@ module.exports = (Discord, client, config) => {
                 return true;
             }
         },
-        help: "Plez dun hurt me ;-; {owner only}"
+        help: "Plez dun hurt me ;-; {owner only}",
+        module: moduleName
     });
 
     client.commandMap.set('prefix', {
@@ -163,7 +168,8 @@ module.exports = (Discord, client, config) => {
                 return true;
             }
         },
-        help: "Change my prefix {owner only}"
+        help: "Change my prefix {owner only}",
+        module: moduleName
     });
 
     client.commandMap.set('ban', {
@@ -188,7 +194,8 @@ module.exports = (Discord, client, config) => {
                 return true;
             }
         },
-        help: "Ban user from me for any server {owner only}"
+        help: "Ban user from me for any server {owner only}",
+        module: moduleName
     });
 
     client.commandMap.set('unban', {
@@ -213,7 +220,8 @@ module.exports = (Discord, client, config) => {
                 return true;
             }
         },
-        help: "Unban user from me for any server {owner only}"
+        help: "Unban user from me for any server {owner only}",
+        module: moduleName
     });
 
     client.commandMap.set('help', {
@@ -229,7 +237,8 @@ module.exports = (Discord, client, config) => {
         check() {
             return true;
         },
-        help: "Get a list of commands and help info."
+        help: "Get a list of commands and help info.",
+        module: moduleName
     });
 
     client.commandMap.set('update', {
@@ -256,7 +265,8 @@ module.exports = (Discord, client, config) => {
                 return true;
             }
         },
-        help: "Update the bot to the latest github version {owner only}"
+        help: "Update the bot to the latest github version {owner only}",
+        module: moduleName
     })
 
 }

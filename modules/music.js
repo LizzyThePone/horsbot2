@@ -1,7 +1,8 @@
 const rp = require('request-promise');
 const isurl = require('is-url');
+moduleName = "MUSIC";
 
-module.exports = (Discord, client, config) => {
+module.exports = (Discord, client, config, keyv) => {
     console.log("Loaded music commands")
 
     const {PlayerManager} = require("discord.js-lavalink");
@@ -132,7 +133,8 @@ module.exports = (Discord, client, config) => {
                 return true;
             }
         },
-        help: "Search youtube and play the first result, or play from youtube playlist, video, stream, or soundcloud link"
+        help: "Search youtube and play the first result, or play from youtube playlist, video, stream, or soundcloud link",
+        module: moduleName
     });
 
     client.commandMap.set('skip', {
@@ -156,7 +158,8 @@ module.exports = (Discord, client, config) => {
                 return true;
             }
         },
-        help: "Skip the current song"
+        help: "Skip the current song",
+        module: moduleName
     });
 
     client.commandMap.set('stop', {
@@ -181,7 +184,8 @@ module.exports = (Discord, client, config) => {
                 return true;
             }
         },
-        help: "Stop playing and remove everything from the queue."
+        help: "Stop playing and remove everything from the queue.",
+        module: moduleName
     });
 
     client.commandMap.set('volume', {
@@ -227,6 +231,7 @@ module.exports = (Discord, client, config) => {
                 return true;
             }
         },
-        help: "Set the volume of the bot {2 - 100}"
+        help: "Set the volume of the bot {2 - 100}",
+        module: moduleName
     });
 };

@@ -26,6 +26,8 @@
     "request": "^2.88.0",
     "request-promise": "^4.2.2",
     "uws": "^9.148.0",
-    "git-pull-or-clone": "^1.2.0"
+    "git-pull-or-clone": "^1.2.0",
+    "enmap": "^4.8.0",
+    "better-sqlite-pool": "^0.2.0"
   }
 }

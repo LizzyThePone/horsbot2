@@ -5,6 +5,8 @@ const client = new Discord.Client();
 const chalk = require('chalk');
 const fs = require('fs-extra');
 client.commandMap = new Map();
+const Keyv = require("keyv");
+let keyv;
 let configLocation = './config/config.json';
 let defaultConfigLocation = './config/default_config.json';
 let bansLocation = './config/bannedusers.json';
@@ -18,12 +20,13 @@ fs.exists(configLocation).then(exists => {
         let defaultConfig = fs.readJsonSync(defaultConfigLocation);
         fs.writeJsonSync(configLocation, defaultConfig);
         console.log('Wrote default_config.json to config.json');
-        console.log('Add your token into that file now');
+        console.log('Add your token and mongo login into that file now');
     } else {
         let configFile = fs.readJsonSync(configLocation);
         console.log('Config loaded!');
         config = configFile;
         client.login(config.token);
+        keyv = new Keyv(config.mongo);
     }
 });
 
@@ -74,9 +77,11 @@ client.on('ready', () => {
         client.owner = app.owner;
         console.log(chalk.hex(config.readyColor)(`Owner set to ${chalk.blue(client.owner.tag)}`));
         console.log(chalk.hex(config.lineColor)('-----------------------------\n'));
-        require('./modules/commands')(Discord, client, config);
-        require('./modules/music')(Discord, client, config);
-        require('./modules/moderation')(Discord, client, config);
+        nmap.defer.then( () => {
+            require('./modules/commands')(Discord, client, config, nmap);
+            require('./modules/music')(Discord, client, config, nmap);
+            require('./modules/moderation')(Discord, client, config, nmap);
+        }
         let embed = new Discord.RichEmbed()
             .setDescription(`Started at ${new Date()}`)
             .setColor(config.embedColor);
@@ -140,3 +145,10 @@ client.on('messageUpdate', message => {
         logCommand(message);
     }
 });
+
+client.on('guildMemberAdd', member => {
+    keyv.get(member.guild.id).then((guild = {}) => {
+        if(!guild.autorole) return;
+        member.addRole(guild.autorole).catch(() => {return});
+    })
+})

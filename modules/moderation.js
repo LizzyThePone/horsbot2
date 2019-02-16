@@ -1,6 +1,8 @@
 const fs = require('fs-extra');
+const enmap = require("enmap");
+moduleName = "MODERATION"
 
-module.exports = (Discord, client, config) => {
+module.exports = (Discord, client, config, keyv) => {
     console.log("Loaded mod commands")
 
     client.commandMap.set('prune', {
@@ -20,7 +22,7 @@ module.exports = (Discord, client, config) => {
                 message.channel.send(embed);
                 return;
             }
-            message.channel.bulkDelete(deleteAmmount).then(messages => {
+            message.channel.bulkDelete(deleteAmmount, true).then(messages => {
                 deleteAmmount = messages.array().length;
                 let embed = new Discord.RichEmbed()
                     .setTitle(`\u2705 Deleted ${deleteAmmount} messages!`)
@@ -63,13 +65,16 @@ module.exports = (Discord, client, config) => {
                 return true;
             }
         },
-        help: "Deletes a specified number of messages, or 100 by default"
+        help: "Deletes a specified number of messages, or 100 by default",
+        module: moduleName
     });
-    /*
+
     client.commandMap.set('autorole', {
         func(message) {
-            let role = message.mentions.roles.first();
-            fs.writeJsonSync(guildsLocation, client.guildConfig);
+            keyv.get(message.guild.id).then((guild = {}) => {
+                guild.autorole = message.mentions.roles.first().id;
+                keyv.set(message.guild.id, guild);
+            });
         },
         check(message) {
             if (message.channel.type !== "text") {
@@ -93,11 +98,17 @@ module.exports = (Discord, client, config) => {
                     .setColor(config.errorColor);
                 message.channel.send(embed);
                 return false;
+            } else if (!message.mentions.roles.first()){
+                let embed = new Discord.RichEmbed()
+                    .setTitle("Unable to run:")
+                    .setDescription('You must mention a role to set!')
+                    .setColor(config.errorColor);
+                message.channel.send(embed);
+                return false;
             } else {
                 return true;
             }
-        }
+        },
+        help: "Give mentioned role to anyone who joins this server"
     });
-*/
-    
 };
