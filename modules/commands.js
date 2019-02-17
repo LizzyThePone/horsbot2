@@ -175,9 +175,9 @@ module.exports = (Discord, client, config, keyv) => {
     client.commandMap.set('gban', {
         func(message) {
             let banUser = message.mentions.users.first();
-            keyv.get(banUser).then((user = {}) => {
+            keyv.get(banUser.id).then((user = {}) => {
                 user.banned = true;
-                keyv.set(banUser, user)
+                keyv.set(banUser.id, user)
             });
             let embed = new Discord.RichEmbed()
                 .setDescription(`Banned ${banUser}`)
@@ -202,10 +202,10 @@ module.exports = (Discord, client, config, keyv) => {
 
     client.commandMap.set('gunban', {
         func(message) {
-            let banUser = message.mentions.users.first().id;
-            keyv.get(banUser).then((user = {}) => {
+            let banUser = message.mentions.users.first();
+            keyv.get(banUser.id).then((user = {}) => {
                 user.banned = false;
-                keyv.set(banUser, user)
+                keyv.set(banUser.id, user)
             });
             let embed = new Discord.RichEmbed()
                 .setDescription(`Unbanned ${banUser}`)
