@@ -172,11 +172,13 @@ module.exports = (Discord, client, config, keyv) => {
         module: moduleName
     });
 
-    client.commandMap.set('ban', {
+    client.commandMap.set('gban', {
         func(message) {
             let banUser = message.mentions.users.first();
-            client.banned.push(banUser.id);
-            fs.writeJsonSync('./bannedusers.json', client.banned);
+            keyv.get(banUser).then((user = {}) => {
+                user.banned = true;
+                keyv.set(banUser, user)
+            });
             let embed = new Discord.RichEmbed()
                 .setDescription(`Banned ${banUser}`)
                 .setColor(config.errorColor);
@@ -194,15 +196,17 @@ module.exports = (Discord, client, config, keyv) => {
                 return true;
             }
         },
-        help: "Ban user from me for any server {owner only}",
+        help: "Global ban a user {owner only}",
         module: moduleName
     });
 
-    client.commandMap.set('unban', {
+    client.commandMap.set('gunban', {
         func(message) {
-            let banUser = message.mentions.users.first();
-            client.banned = client.banned.filter(element => element !== banUser.id);
-            fs.writeJsonSync('./bannedusers.json', client.banned);
+            let banUser = message.mentions.users.first().id;
+            keyv.get(banUser).then((user = {}) => {
+                user.banned = false;
+                keyv.set(banUser, user)
+            });
             let embed = new Discord.RichEmbed()
                 .setDescription(`Unbanned ${banUser}`)
                 .setColor(config.errorColor);
@@ -220,7 +224,7 @@ module.exports = (Discord, client, config, keyv) => {
                 return true;
             }
         },
-        help: "Unban user from me for any server {owner only}",
+        help: "Undo a global ban {owner only}",
         module: moduleName
     });
 

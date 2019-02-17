@@ -121,7 +121,7 @@ module.exports = (Discord, client, config, keyv) => {
     client.commandMap.set('unautorole', {
         func(message) {
             keyv.get(message.guild.id).then((guild = {}) => {
-                guild.autorole = message.mentions.roles.first().id;
+                guild.autorole = undefined;
                 keyv.set(message.guild.id, guild).then( () => {
                     let embed = new Discord.RichEmbed()
                         .setTitle("Automatic role removed!")

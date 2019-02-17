@@ -91,28 +91,30 @@ client.on('message', message => {
     if (!message.content.startsWith(config.prefix)) return;
     message.commandName = message.content.toLocaleLowerCase().split(' ')[0].slice(config.prefix.length);
     let command = client.commandMap.get(message.commandName);
-    if (command) {
-        message.used = true
-        if (client.banned.find(element => element === message.author.id)) {
-            let embed = new Discord.RichEmbed()
-                .setTitle("You are banned by the bot owner.")
-                .setColor(config.errorColor);
-            message.channel.send(embed);
-            message.denied = true;
-            logCommand(message);
-            return;
-        }
-        if (command.check) {
-            if (command.check(message) !== true) {
+    keyv.get(banUser).then((user = {}) => {
+        if (command) {
+            message.used = true
+            if (user.banned === true) {
+                let embed = new Discord.RichEmbed()
+                    .setTitle("You are banned by the bot owner.")
+                    .setColor(config.errorColor);
+                message.channel.send(embed);
                 message.denied = true;
                 logCommand(message);
                 return;
             }
+            if (command.check) {
+                if (command.check(message) !== true) {
+                    message.denied = true;
+                    logCommand(message);
+                    return;
+                }
+            }
+            command.func(message);
+            message.denied = false;
+            logCommand(message);
         }
-        command.func(message);
-        message.denied = false;
-        logCommand(message);
-    }
+    });
 });
 
 client.on('messageUpdate', message => {
@@ -122,7 +124,7 @@ client.on('messageUpdate', message => {
     let command = client.commandMap.get(message.commandName);
     if (command) {
         message.used = true
-        if (client.banned.find(element => element === message.author.id)) {
+        if (user.banned === true) {
             let embed = new Discord.RichEmbed()
                 .setTitle("You are banned by the bot owner.")
                 .setColor(config.errorColor);
