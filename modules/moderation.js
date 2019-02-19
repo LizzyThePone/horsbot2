@@ -68,6 +68,49 @@ module.exports = (Discord, client, config, keyv) => {
         module: moduleName
     });
 
+    client.commandMap.set('purge', {
+        func(message) {
+            let embed = new Discord.RichEmbed()
+                    .setTitle("Are you sure?")
+                    .setDescription('This will clear every message in this channel. EVERYTHING.')
+                    .setColor(config.errorColor);
+                message.channel.send(embed).then(m => {
+                    const filter = (reaction, user) => reaction.emoji.name === '✅' && user.id === message.author.id
+                    m.createReactionCollector(filter, {time: 60000}).on('collect', () => {
+                        message.channel.clone(undefined, true, true, `Horse bot purge by ${message.author.tag}`)
+                    })
+                });
+        },
+        check(message) {
+            if (message.channel.type !== "text") {
+                let embed = new Discord.RichEmbed()
+                    .setTitle("Unable to run:")
+                    .setDescription('This can only run in a server!')
+                    .setColor(config.errorColor);
+                message.channel.send(embed);
+                return false;
+            } else if (!message.channel.permissionsFor(message.member).has('ADMINISTRATOR')) {
+                let embed = new Discord.RichEmbed()
+                    .setTitle("Unable to run:")
+                    .setDescription('You must have the administrator permission!')
+                    .setColor(config.errorColor);
+                message.channel.send(embed);
+                return false;
+            } else if (!message.channel.permissionsFor(message.guild.me).has('MANAGE_CHANNELS')) {
+                let embed = new Discord.RichEmbed()
+                    .setTitle("Unable to run:")
+                    .setDescription('I don\'t have permission to do that here!')
+                    .setColor(config.errorColor);
+                message.channel.send(embed);
+                return false;
+            } else {
+                return true;
+            }
+        },
+        help: "Deletes a specified number of messages, or 100 by default",
+        module: moduleName
+    });
+
     client.commandMap.set('autorole', {
         func(message) {
             keyv.get(message.guild.id).then((guild = {}) => {
