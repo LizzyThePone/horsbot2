@@ -187,7 +187,7 @@ client.on('message', message => {
 
 client.on('message', message => {
     if (!message.guild) return
-    keyv.get(member.channel.id).then((channel = {}) => {
+    keyv.get(message.channel.id).then((channel = {}) => {
         if(channel.botonly && !message.author.bot) {
             message.delete(100)
         }
