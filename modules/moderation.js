@@ -76,6 +76,8 @@ module.exports = (Discord, client, config, keyv) => {
                     .setColor(config.errorColor);
                 message.channel.send(embed).then(m => {
                     const filter = (reaction, user) => reaction.emoji.name === '✅' && user.id === message.author.id
+                    m.react("✅")
+                    m.react("❌")
                     m.createReactionCollector(filter, {time: 60000}).on('collect', () => {
                         message.channel.clone(undefined, true, true, `Horse bot purge by ${message.author.tag}`)
                     })
