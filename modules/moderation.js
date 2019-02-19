@@ -167,4 +167,49 @@ module.exports = (Discord, client, config, keyv) => {
         module: moduleName
     });
     
+    client.commandMap.set('botonly', {
+        func(message) {
+            keyv.get(message.channel.id).then((channel = {}) => {
+                if (!channel.botonly){
+                    channel.botonly = true;
+                } else {
+                    channel.botonly = false;
+                }
+                keyv.set(message.channel.id, channel).then( () => {
+                let embed = new Discord.RichEmbed()
+                    .setTitle(`Bot only mode turned ${channel.botonly ? "ON" : "OFF"}`)
+                    .setColor(config.embedColor);
+                message.channel.send(embed);
+                })
+            });
+        },
+        check(message) {
+            if (message.channel.type !== "text") {
+                let embed = new Discord.RichEmbed()
+                    .setTitle("Unable to run:")
+                    .setDescription('This can only run in a server!')
+                    .setColor(config.errorColor);
+                message.channel.send(embed);
+                return false;
+            } else if (!message.channel.permissionsFor(message.member).has('ADMINISTRATOR')) {
+                let embed = new Discord.RichEmbed()
+                    .setTitle("Unable to run:")
+                    .setDescription('You must have the administrator permission!')
+                    .setColor(config.errorColor);
+                message.channel.send(embed);
+                return false;
+            } else if (!message.channel.permissionsFor(message.guild.me).has('MANAGE_MESSAGES')) {
+                let embed = new Discord.RichEmbed()
+                    .setTitle("Unable to run:")
+                    .setDescription('I don\'t have permission to do that here!')
+                    .setColor(config.errorColor);
+                message.channel.send(embed);
+                return false;
+            } else {
+                return true;
+            }
+        },
+        help: "Only allow bots to send messages in this channel.",
+        module: moduleName
+    });
 };
