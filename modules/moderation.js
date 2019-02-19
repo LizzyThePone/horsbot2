@@ -79,7 +79,12 @@ module.exports = (Discord, client, config, keyv) => {
                     m.react("✅")
                     m.react("❌")
                     m.createReactionCollector(filter, {time: 60000}).on('collect', () => {
-                        message.channel.clone(undefined, true, true, `Horse bot purge by ${message.author.tag}`)
+                        let pos = message.channel.position
+                        message.channel.clone(undefined, true, true, `Horse bot purge by ${message.author.tag}`).then(() => {
+                            message.channel.delete().then(() => {
+                                m.setPosition(pos)
+                            })
+                        })
                     })
                 });
         },
