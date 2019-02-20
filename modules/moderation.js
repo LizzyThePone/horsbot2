@@ -161,13 +161,6 @@ module.exports = (Discord, client, config, keyv) => {
                     .setColor(config.errorColor);
                 message.channel.send(embed);
                 return false;
-            } else if (!message.mentions.roles.first()){
-                let embed = new Discord.RichEmbed()
-                    .setTitle("Unable to run:")
-                    .setDescription('You must mention a role to set!')
-                    .setColor(config.errorColor);
-                message.channel.send(embed);
-                return false;
             } else {
                 return true;
             }
