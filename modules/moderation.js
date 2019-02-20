@@ -82,10 +82,16 @@ module.exports = (Discord, client, config, keyv) => {
                         let channel = message.channel
                         message.channel.clone(undefined, true, true, `Horse bot purge by ${message.author.tag}`).then(clone => {
                             message.channel.delete().then(() => {
-                                clone.setPosition(pos)
-                            })
-                        })
-                    })
+                                if (channel.parent) {
+                                    clone.setParent(channel.parent).then(() => {
+                                        clone.setPosition(channel.position)
+                                    });
+                                    return;
+                                }
+                                clone.setPosition(channel.position)
+                            });
+                        });
+                    });
                 });
         },
         check(message) {
