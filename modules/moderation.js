@@ -79,10 +79,10 @@ module.exports = (Discord, client, config, keyv) => {
                     m.react("✅")
                     m.react("❌")
                     m.createReactionCollector(filter, {time: 60000}).on('collect', () => {
-                        let pos = message.channel.position
-                        message.channel.clone(undefined, true, true, `Horse bot purge by ${message.author.tag}`).then(() => {
+                        let channel = message.channel
+                        message.channel.clone(undefined, true, true, `Horse bot purge by ${message.author.tag}`).then(clone => {
                             message.channel.delete().then(() => {
-                                m.setPosition(pos)
+                                clone.setPosition(pos)
                             })
                         })
                     })
@@ -114,7 +114,7 @@ module.exports = (Discord, client, config, keyv) => {
                 return true;
             }
         },
-        help: "Deletes a specified number of messages, or 100 by default",
+        help: "Nukes a chat.",
         module: moduleName
     });
 
