@@ -87,8 +87,10 @@ module.exports = (Discord, client, config, keyv) => {
                                         clone.setPosition(channel.position)
                                     });
                                     return;
+                                } else {
+                                    clone.setPosition(channel.position)
                                 }
-                                clone.setPosition(channel.position)
+                                
                             });
                         });
                     });
@@ -121,6 +123,56 @@ module.exports = (Discord, client, config, keyv) => {
             }
         },
         help: "Nukes a chat.",
+        module: moduleName
+    });
+
+    client.commandMap.set('autoname', {
+        func(message) {
+            keyv.get(message.guild.id).then((guild = {}) => {
+                guild.autoname = message.content.replace(`${config.prefix}autoname`, '');
+                keyv.set(message.guild.id, guild).then( () => {
+                let embed = new Discord.RichEmbed()
+                    .setTitle("Automatic name set. Example:")
+                    .setDescription(guild.autoname.replace('$user', message.author.username))
+                    .setColor(config.embedColor);
+                message.channel.send(embed);
+                })
+            });
+        },
+        check(message) {
+            if (message.channel.type !== "text") {
+                let embed = new Discord.RichEmbed()
+                    .setTitle("Unable to run:")
+                    .setDescription('This can only run in a server!')
+                    .setColor(config.errorColor);
+                message.channel.send(embed);
+                return false;
+            } else if (!message.channel.permissionsFor(message.member).has('MANAGE_ROLES')) {
+                let embed = new Discord.RichEmbed()
+                    .setTitle("Unable to run:")
+                    .setDescription('You must be able to delete messages here!')
+                    .setColor(config.errorColor);
+                message.channel.send(embed);
+                return false;
+            } else if (!message.channel.permissionsFor(message.guild.me).has('MANAGE_ROLES')) {
+                let embed = new Discord.RichEmbed()
+                    .setTitle("Unable to run:")
+                    .setDescription('I don\'t have permission to do that here!')
+                    .setColor(config.errorColor);
+                message.channel.send(embed);
+                return false;
+            } else if (!message.mentions.roles.first()){
+                let embed = new Discord.RichEmbed()
+                    .setTitle("Unable to run:")
+                    .setDescription('You must mention a role to set!')
+                    .setColor(config.errorColor);
+                message.channel.send(embed);
+                return false;
+            } else {
+                return true;
+            }
+        },
+        help: "Change someones nickname upon joining a server. $user = their username",
         module: moduleName
     });
 
@@ -222,6 +274,8 @@ module.exports = (Discord, client, config, keyv) => {
         help: "Remove automatic role assignment",
         module: moduleName
     });
+
+
     
     client.commandMap.set('botonly', {
         func(message) {
