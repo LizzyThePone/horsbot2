@@ -281,7 +281,6 @@ module.exports = (Discord, client, config, keyv) => {
                     let embed = new Discord.RichEmbed()
                         .setTitle(`https://discordapp.com/channels/${message.guild.id}/${member.voiceChannel.id}`)
                         .setColor(config.embedColor)
-                        //.setURL(`https://discordapp.com/channels/${message.guild.id}/${member.voiceChannel.id}`)
                     message.channel.send(embed);
                 } else {
                     let embed = new Discord.RichEmbed()
@@ -295,6 +294,23 @@ module.exports = (Discord, client, config, keyv) => {
             return true;
         },
         help: "Make a video share link for the voice channel you're in.",
+        module: moduleName
+    });
+
+    client.commandMap.set('listvideo', {
+        func(message) {
+            if(message.guild){
+                let embed = new Discord.RichEmbed()
+                let channels = message.guild.channels.filter(channel => channel.type == "voice").array().forEach(channel => {
+                    embed.addField(channel.name, `https://discordapp.com/channels/${message.guild.id}/${channel.id}`)
+                })
+                message.channel.send(embed);
+            }
+        },
+        check() {
+            return true;
+        },
+        help: "Make video share links for all voice channels.",
         module: moduleName
     });
 
