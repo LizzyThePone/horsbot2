@@ -279,9 +279,9 @@ module.exports = (Discord, client, config, keyv) => {
                 let member = message.member
                 if(message.member.voiceChannelID){
                     let embed = new Discord.RichEmbed()
-                        .setTitle(member.voiceChannel.name)
+                        .setTitle(`https://discordapp.com/channels/${message.guild.id}/${member.voiceChannel.id}`)
                         .setColor(config.embedColor)
-                        .setURL(`https://discordapp.com/channels/${message.guild.id}/${member.voiceChannel.id}`)
+                        //.setURL(`https://discordapp.com/channels/${message.guild.id}/${member.voiceChannel.id}`)
                     message.channel.send(embed);
                 } else {
                     let embed = new Discord.RichEmbed()
