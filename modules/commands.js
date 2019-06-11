@@ -273,6 +273,32 @@ module.exports = (Discord, client, config, keyv) => {
         module: moduleName
     })
 
+    client.commandMap.set('video', {
+        func(message) {
+            if(message.guild){
+                let member = message.member
+                if(message.member.voiceChannelID){
+                    let embed = new Discord.RichEmbed()
+                        .setTitle(member.voiceChannel.name)
+                        .setColor(config.embedColor)
+                        .setURL(`https://discordapp.com/channels/${message.guild.id}/${member.voiceChannel.id}`)
+                    message.channel.send(embed);
+                } else {
+                    let embed = new Discord.RichEmbed()
+                        .setTitle('You\'re not in a voice channel!')
+                        .setColor(config.embedColor)
+                    message.channel.send(embed);
+                }
+            }
+        },
+        check() {
+            return true;
+        },
+        help: "Make a video share link for the voice channel you're in.",
+        module: moduleName
+    });
+
+
 }
 
 
