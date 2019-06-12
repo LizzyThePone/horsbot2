@@ -58,6 +58,7 @@ module.exports = (Discord, client, config, keyv) => {
     client.commandMap.set('play', {
         func(message) {
             let searchString = message.content.replace(config.prefix + "play ", "");
+            console.log(searchString)
             if (isurl(searchString)) {
                 getSongs(searchString).then(data => {
                     if (data.loadType === 'NO_MATCHES') {
