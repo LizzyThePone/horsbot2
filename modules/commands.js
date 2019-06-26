@@ -120,7 +120,8 @@ module.exports = (Discord, client, config, keyv) => {
             }
         },
         help: "Nuthing as far as you're concerned :3 {owner only}",
-        module: moduleName
+        module: moduleName,
+        owner: true
     });
 
     client.commandMap.set('shutdown', {
@@ -144,7 +145,8 @@ module.exports = (Discord, client, config, keyv) => {
             }
         },
         help: "Plez dun hurt me ;-; {owner only}",
-        module: moduleName
+        module: moduleName,
+        owner: true
     });
 
     client.commandMap.set('prefix', {
@@ -169,7 +171,8 @@ module.exports = (Discord, client, config, keyv) => {
             }
         },
         help: "Change my prefix {owner only}",
-        module: moduleName
+        module: moduleName,
+        owner: true
     });
 
     client.commandMap.set('gban', {
@@ -197,7 +200,8 @@ module.exports = (Discord, client, config, keyv) => {
             }
         },
         help: "Global ban a user {owner only}",
-        module: moduleName
+        module: moduleName,
+        owner: true
     });
 
     client.commandMap.set('gunban', {
@@ -225,7 +229,8 @@ module.exports = (Discord, client, config, keyv) => {
             }
         },
         help: "Undo a global ban {owner only}",
-        module: moduleName
+        module: moduleName,
+        owner: true
     });
 
     client.commandMap.set('help', {
@@ -234,7 +239,9 @@ module.exports = (Discord, client, config, keyv) => {
             const embed = new Discord.RichEmbed()
                 .setColor(config.embedColor)
                 client.commandMap.forEach((element, key) => {
-                    embed.addField(key, element.help);
+                    if(!element.owner){
+                        embed.addField(key, element.help);
+                    }
                 });
             message.channel.send(embed);
         },
@@ -270,7 +277,8 @@ module.exports = (Discord, client, config, keyv) => {
             }
         },
         help: "Update the bot to the latest github version {owner only}",
-        module: moduleName
+        module: moduleName,
+        owner: true
     })
 
     client.commandMap.set('video', {
