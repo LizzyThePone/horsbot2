@@ -57,40 +57,6 @@ module.exports = (Discord, client, config, keyv) => {
 
     client.commandMap.set('play', {
         func(message) {
-            if(message.content.toLowerCase().trim() === config.prefix + "play") {
-                if(message.attachments.array().length > 0){
-                    let link = message.attachments.first().url
-                    console.log(link)
-                    getSongs(link).then(data => {
-                        if (data.loadType === 'NO_MATCHES') {
-                            let embed = new Discord.RichEmbed()
-                                .setTitle("No songs found!")
-                                .setColor(config.errorColor);
-                            message.channel.send(embed);
-                            return;
-                        }
-                        if (!message.guild.queue) {
-                            message.guild.queue = [];
-                        }
-                        if (data.loadType === 'TRACK_LOADED') {
-                            let embed = new Discord.RichEmbed()
-                                .setTitle(data.tracks[0].info.title)
-                                .setDescription('Track queued!')
-                                .setURL(searchString)
-                                .setColor(config.errorColor);
-                            message.channel.send(embed).then(response => {
-                                response.delete(60000);
-                            });
-                            if (message.guild.queue.length === 0) {
-                                message.guild.queue.push(data.tracks[0]);
-                                play(message.guild, message.member.voiceChannel);
-                            } else {
-                                message.guild.queue.push(data.tracks[0]);
-                            }
-                        }
-                    });
-                }
-            }
             let searchString = message.content.replace(config.prefix + "play ", "");
             console.log(searchString)
             if (isurl(searchString)) {

@@ -239,7 +239,7 @@ module.exports = (Discord, client, config, keyv) => {
             const embed = new Discord.RichEmbed()
                 .setColor(config.embedColor)
                 client.commandMap.forEach((element, key) => {
-                    if(!element.owner){
+                    if(element.owner){
                         embed.addField(key, element.help);
                     }
                 });
